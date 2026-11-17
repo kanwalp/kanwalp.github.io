@@ -90,7 +90,7 @@ reproduced in the repeat run, so it was not identified.
 
 ## Privacy and security
 
-- Full git history scanned: no phone number, no `+91`, no tokens or secrets. PASS.
+- Full git history scanned: no phone number (with or without country code), no tokens or secrets. PASS.
 - Private résumé PDF and the handoff folder are not published (live 404) and are gitignored. PASS.
 - Email is published by prior explicit approval; it is the address on the résumé. No phone number. PASS.
 - No client code, screenshots, internal URLs or topology; diagrams labelled conceptual. PASS.
@@ -132,6 +132,17 @@ Local Lighthouse 13, Chrome headless, simulated mobile (4× CPU) and desktop pre
 5. Cosmetic: on narrow phones the hero meta row wraps, leaving a separator border at the start of the second line.
 6. Mobile lab TBT (see above); revisit only if field INP is poor.
 
-## Deployment
+## Deployment (verified, not assumed)
 
-See the section appended after push for commit hash and live verification.
+- `gh auth status`: authenticated as `kanwalp`. Pages: source `main` / root, HTTPS enforced, status `built`.
+- Fix commit **`3313b354a7b1db8763602a75af5b4423b44d4f74`** pushed to `main` (fast-forward, no force-push).
+  Pages build `built` for that commit; workflow run 44039321625 succeeded.
+- Live `https://kanwalp.github.io/` HTML is byte-identical to the local tested `index.html` (line endings normalised).
+- Live HTTP 200: `/`, `/robots.txt` (new rules live), `/sitemap.xml`, `/favicon.svg`, `/og-cover.png`.
+  The private résumé path returns 404. `http://` redirects (301) to HTTPS.
+- **Full 21-test suite run against production** (`BASE_URL=https://kanwalp.github.io npx playwright test`): 21/21 passed.
+- Live Lighthouse (single run, lab): mobile Perf 71 / A11y 100 / BP 100 / SEO 100, FCP and LCP 1.2s, CLS 0,
+  TBT 2.0s; desktop Perf 82 / 100 / 100 / 100, LCP 0.8s, CLS 0, TBT 340ms. Transfer is 19 KiB (gzip).
+- The follow-up commit containing this section is documentation and test-config only; its hash is in `git log`.
+
+Run the suite against any deployment with `BASE_URL=https://kanwalp.github.io npx playwright test`.

@@ -18,6 +18,9 @@ npm test
 ```
 
 Tests start their own loopback server; stop a manually started server first.
+To test the live deployment instead, set `BASE_URL`
+(`$env:BASE_URL='https://kanwalp.github.io'; npm test`).
+See `CLAUDE_VALIDATION_REPORT.md` for the independent validation results.
 For Lighthouse, start the loopback server and run `npm run test:lighthouse`
 with Chrome installed (or set `CHROME_PATH` to the Playwright Chromium executable).
 Reports are written under ignored `test-results/`.

@@ -2,6 +2,7 @@ const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 
 const chapters = ['intro', 'flagship', 'work', 'experience', 'architecture', 'expertise', 'principles', 'contact'];
+const BASE = (process.env.BASE_URL || 'http://127.0.0.1:4173').replace(/\/$/, '');
 const cases = ['azure', 'cicd', 'reliability', 'tools', 'gov', 'pharma'];
 
 test('raw HTML, structured data, local assets and crawler files', async ({ request, page }) => {
@@ -154,7 +155,7 @@ test('tall chapters and nested scroll areas are not wheel-trapped', async ({ pag
 test('mobile touch, next, final chapter and deep links', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 375, height: 844 }, isMobile: true, hasTouch: true });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4173/');
+  await page.goto(BASE + '/');
   await page.locator('#mobileNext').tap();
   await expect(page).toHaveURL(/#flagship$/);
   await expect(page.locator('#mobileStep')).toHaveText('02 / 08');
@@ -164,7 +165,7 @@ test('mobile touch, next, final chapter and deep links', async ({ browser }) => 
   await page.locator('#mobileNext').tap();
   await expect(page.locator('#mobileStep')).toHaveText('01 / 08');
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
-  await page.goto('http://127.0.0.1:4173/#expertise');
+  await page.goto(BASE + '/#expertise');
   await expect(page.locator('.mobile-dot[data-go="expertise"]')).toHaveAttribute('aria-current', 'step');
   await context.close();
 });
@@ -190,7 +191,7 @@ test('reduced motion, skip link and browser keyboard scrolling', async ({ page }
 test('all case studies are readable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4173/');
+  await page.goto(BASE + '/');
   for (const id of cases) await expect(page.locator(`#case-${id}`)).toBeVisible();
   await expect(page.locator('h1')).toBeVisible();
   await expect(page.locator('a[href^="mailto:"]').first()).toHaveAttribute('href', /mailto:/);
@@ -270,7 +271,7 @@ test('saved dark theme is applied from <head> before body content renders', asyn
 test('on stacked mobile layout selecting a case brings its details into view', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 375, height: 700 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4173/#work');
+  await page.goto(BASE + '/#work');
   await page.locator('[data-case="pharma"]').tap();
   await expect(page.locator('#case-pharma')).toBeInViewport();
   await context.close();
