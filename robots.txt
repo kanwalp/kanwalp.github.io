@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kanwalp.github.io/sitemap.xml

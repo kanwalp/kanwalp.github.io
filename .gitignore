@@ -1,0 +1,7 @@
+Kanwal_Career_Codex_Handoff/
+node_modules/
+test-results/
+playwright-report/
+*.pdf
+*.log
+.lighthouseci/

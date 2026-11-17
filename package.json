@@ -1,0 +1,17 @@
+{
+  "name": "kanwal-career-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build-free career portfolio with development-only validation tools.",
+  "scripts": {
+    "test": "playwright test",
+    "test:html": "html-validate index.html",
+    "test:lighthouse": "lighthouse http://127.0.0.1:4173 --quiet --chrome-flags=\"--headless\" --output=json --output-path=test-results/lighthouse.json"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.56.1",
+    "html-validate": "^11.21.1",
+    "lighthouse": "^13.0.0"
+  }
+}
