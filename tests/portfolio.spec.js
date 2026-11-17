@@ -217,6 +217,8 @@ test('resume fidelity: titles, dates, client attribution and exact certification
     'MARCH 2021 — PRESENT', 'INGRAIN SYSTEMS PVT. LTD. · GAP INC. (CLIENT)', 'Software Development Engineer (.NET Developer)',
     'JULY 2019 — FEBRUARY 2021', 'Development Team Lead: Jul 2020 – Feb 2021.', 'Senior .NET Developer: Jul 2019 – Jun 2020.',
     'MAY 2016 — JULY 2019', 'LIGHT PHARMA PVT. LTD.', 'Microsoft Certified Professional — Programming in C#',
+    'Google AI Specialization — Google via Coursera, June 2026',
+    'https://www.coursera.org/account/accomplishments/professional-cert/WXJD7VOTM1YK',
     'Entrance Permitting System (EPS)', 'Outdoor Advertising Control System (OACS)', 'Pharma Investigator (PI)'
   ]) expect(html).toContain(fact);
   // The resume headline is ".NET Full Stack Engineer"; no unverified seniority, employment at the client, or metrics.

@@ -19,6 +19,7 @@ No private document bytes or contact details are reproduced in this audit.
 | Light Pharma, May 2016-Jul 2019, Software Engineer, PI | Page 2 Light Pharma | Includes WPF/WCF, Angular 6, ASP.NET Core, modernization and PI Document |
 | Skill categories | Page 1 Technical Expertise; page 2 responsibilities | No proficiency ratings or unsupported microservices claims |
 | Microsoft Certified Professional - Programming in C# | Page 2 Professional Certification | Exact credential wording retained on site; no date or verification badge invented |
+| Google AI Specialization (Google, via Coursera), completed June 15, 2026 | Owner-supplied Coursera verification page (WXJD7VOTM1YK) | Name, issuer and date copied from the verification page; linked for verification |
 | AI-assisted ideation, validation and internal .NET support tools | Page 1 Professional Profile and AI section | Human engineering responsibility retained |
 | Working principles and four engineering layers | Responsibilities across both pages | Editorial synthesis; diagrams explicitly conceptual, not employer topology |
 | GitHub identity | Authenticated GitHub account and public user API | Only verified profile linked in JSON-LD; no invented LinkedIn |
