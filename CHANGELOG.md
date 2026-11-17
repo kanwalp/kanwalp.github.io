@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 - 2026-11-17
+
+- GitHub Pages now deploys through GitHub Actions: each push to `main` runs
+  HTML validation and the Playwright suite, then publishes only `index.html`,
+  `robots.txt`, `sitemap.xml`, `favicon.svg` and `og-cover.png`.
+- Removed `.nojekyll` (unneeded without a Jekyll build) and `DEPLOYMENT_REPORT.md`
+  (superseded by `CLAUDE_VALIDATION_REPORT.md`; still in git history).
+- Removed unused CSS (`.icon-btn`, `.mono`) and two unreferenced element IDs.
+- robots.txt reverted to a plain allow-all; dev files are no longer served at all.
+
 ## 1.0.1 - 2026-11-17 (independent Claude validation)
 
 - Fixed wide-screen layout: above 1450px chapter content stretched edge to edge

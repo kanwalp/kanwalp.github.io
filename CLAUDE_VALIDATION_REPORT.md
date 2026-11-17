@@ -23,7 +23,7 @@ and screen-reader checks) and lab mobile blocking time that comes from the test 
 | 5 | Minor | SEO | Meta description was 187 characters, so Google would truncate it. | Fixed (≤160) |
 | 6 | Minor | Fidelity | Hero said "Microsoft C# certified"; the résumé credential is "Microsoft Certified Professional — Programming in C#". | Fixed (exact wording) |
 | 7 | Minor | Fidelity | PETE card said "Extended REST adapters". The résumé says REST services, application adapters and projection-engine functionality. | Fixed |
-| 8 | Low | Crawl hygiene | Branch-root Pages publishes `package.json`, `tests/` and the `.md` reports publicly (HTTP 200, crawlable). | Mitigated (robots.txt Disallow); see remaining issues |
+| 8 | Low | Crawl hygiene | Branch-root Pages publishes `package.json`, `tests/` and the `.md` reports publicly (HTTP 200, crawlable). | Fixed: Pages now deploys via GitHub Actions with only the 5 site files |
 | 9 | Info | Structured data | No ProfilePage entity for a page that is a personal profile. | Added ProfilePage → Person |
 
 ## Résumé fidelity (every public claim)
@@ -95,7 +95,7 @@ reproduced in the repeat run, so it was not identified.
 - Email is published by prior explicit approval; it is the address on the résumé. No phone number. PASS.
 - No client code, screenshots, internal URLs or topology; diagrams labelled conceptual. PASS.
 - No third-party scripts, fonts, trackers or forms; `mailto:` only. PASS.
-- `package.json`, `tests/` and the `.md` reports are public (non-sensitive). Crawling is discouraged via robots.txt.
+- Only `index.html`, `robots.txt`, `sitemap.xml`, `favicon.svg` and `og-cover.png` are deployed; tooling, tests and docs return 404.
 
 ## Performance evidence (lab only)
 
@@ -125,9 +125,7 @@ Local Lighthouse 13, Chrome headless, simulated mobile (4× CPU) and desktop pre
 
 1. Verify the site in Google Search Console, submit `sitemap.xml`, and request indexing. Indexing is not guaranteed.
 2. Test on real Safari (macOS/iOS) and Firefox, and do one screen-reader pass (NVDA/VoiceOver).
-3. Optional: to stop publishing dev files entirely, switch Pages to a GitHub Actions deploy that uploads
-   only `index.html`, `robots.txt`, `sitemap.xml`, `favicon.svg`, `og-cover.png` and `.nojekyll`.
-   This was not done because it changes the repository's Pages configuration.
+3. ~~Stop publishing dev files~~ — done; see "Actions deployment" below.
 4. Optional: approve a redacted public résumé PDF if a download is wanted (currently "request by email").
 5. Cosmetic: on narrow phones the hero meta row wraps, leaving a separator border at the start of the second line.
 6. Mobile lab TBT (see above); revisit only if field INP is poor.

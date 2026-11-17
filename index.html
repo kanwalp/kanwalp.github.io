@@ -72,7 +72,7 @@
     .header-inner{max-width:1280px;width:calc(100% - 90px);margin:auto;height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
     .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-symbol{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--ink);color:var(--paper);font-size:20px;font-weight:800;letter-spacing:-.08em}.brand-name{display:block;font-size:.88rem;font-weight:800;letter-spacing:-.035em}.brand-role{font:10px var(--mono);color:var(--muted);margin-top:4px;letter-spacing:.035em}
     .header-links{display:flex;align-items:center;gap:12px}.header-links a{font-size:.75rem;font-weight:800;color:var(--ink2);transition:color .2s}.header-links a:hover{color:var(--blue)}
-    .theme-btn,.icon-btn{border:1px solid var(--border);height:40px;border-radius:11px;background:var(--paper);color:var(--ink2);display:flex;align-items:center;justify-content:center;gap:9px;padding:0 13px;font-weight:700;font-size:.7rem;transition:background .2s,border .2s}.theme-btn:hover,.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .theme-btn{border:1px solid var(--border);height:40px;border-radius:11px;background:var(--paper);color:var(--ink2);display:flex;align-items:center;justify-content:center;gap:9px;padding:0 13px;font-weight:700;font-size:.7rem;transition:background .2s,border .2s}.theme-btn:hover{border-color:var(--blue);color:var(--blue)}
     .theme-btn svg{width:15px;height:15px}.header-resume{border-radius:11px;background:var(--ink);color:var(--paper)!important;padding:12px 16px;white-space:nowrap}
     .header-resume:hover{background:var(--blue);color:#fff!important}
     .container{width:min(1140px,calc(100% - 380px));margin:auto}
@@ -83,7 +83,7 @@
     .eyebrow{display:flex;gap:11px;align-items:center;font:11px var(--mono);letter-spacing:.095em;text-transform:uppercase;color:var(--blue)}
     .eyebrow::before{content:"";height:1px;width:29px;background:currentColor;opacity:.75}.section-heading{font-size:clamp(2.2rem,4.1vw,4.25rem);letter-spacing:-.073em;line-height:1.16;margin:15px 0 13px;font-weight:800;max-width:780px}.section-heading em{font-style:normal;color:var(--blue)}
     .section-lead{font-size:clamp(.9rem,1.15vw,1.03rem);max-width:720px;color:var(--ink2);line-height:1.85;margin:0}.chapter-top{margin-bottom:31px;position:relative}
-    .mono{font-family:var(--mono)}.meta{color:var(--muted);font:11px/1.6 var(--mono)}
+    .meta{color:var(--muted);font:11px/1.6 var(--mono)}
     .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:13px;border-radius:12px;padding:0 19px;font-size:.8rem;font-weight:800;border:1px solid transparent;transition:transform .2s,border .2s,background .2s}.btn:hover{transform:translateY(-2px)}
     .btn-primary{background:var(--blue);color:#fff;box-shadow:0 12px 25px color-mix(in srgb,var(--blue) 16%,transparent)}.btn-primary:hover{background:var(--blueDeep)}
     html[data-theme="dark"] .btn-primary,html[data-theme="dark"] .mobile-next{color:#0c1322}
@@ -212,7 +212,7 @@
   </nav>
   <nav class="mobile-journey" aria-label="Mobile career journey navigation">
     <span class="mobile-step" id="mobileStep">01 / 08</span>
-    <div class="mobile-dot-track" id="mobileTrack"><div class="mobile-fill" id="mobileFill" aria-hidden="true"></div><div class="mobile-marker" id="mobileMarker" aria-hidden="true"></div>
+    <div class="mobile-dot-track"><div class="mobile-fill" id="mobileFill" aria-hidden="true"></div><div class="mobile-marker" id="mobileMarker" aria-hidden="true"></div>
       <button class="mobile-dot" data-go="intro" type="button" aria-label="Introduction"></button>
       <button class="mobile-dot" data-go="flagship" type="button" aria-label="Flagship system"></button>
       <button class="mobile-dot" data-go="work" type="button" aria-label="Enterprise work"></button>
@@ -298,7 +298,7 @@
         <button type="button" class="arch-node" data-layer="data" aria-pressed="false"><span class="arch-code">DB</span><strong>Data &amp; Messaging</strong><small>SQL Server · MongoDB · RabbitMQ</small></button>
         <button type="button" class="arch-node" data-layer="ops" aria-pressed="false"><span class="arch-code">OPS</span><strong>Operations</strong><small>Azure · CI/CD · reliability</small></button>
       </div><div class="arch-note">Conceptual model using résumé technologies; not a confidential system diagram.</div></div>
-      <div class="arch-explain" id="archExplain" aria-live="polite"><span class="layer" id="layerLabel">LAYER 01 / APPLICATIONS</span><h3 id="layerTitle">Applications people can work in.</h3><p id="layerDescription">I have developed enterprise interfaces in WPF, React and Angular, including reusable components, complex business workflows and modernization of legacy applications.</p></div></div><a class="next-link" href="#expertise">Explore technical depth <span aria-hidden="true">↓</span></a>
+      <div class="arch-explain" aria-live="polite"><span class="layer" id="layerLabel">LAYER 01 / APPLICATIONS</span><h3 id="layerTitle">Applications people can work in.</h3><p id="layerDescription">I have developed enterprise interfaces in WPF, React and Angular, including reusable components, complex business workflows and modernization of legacy applications.</p></div></div><a class="next-link" href="#expertise">Explore technical depth <span aria-hidden="true">↓</span></a>
     </div></section>
 
     <section class="chapter" id="expertise" aria-labelledby="expertise-title"><div class="chapter-inner container"><div class="chapter-mark" aria-hidden="true">06</div>

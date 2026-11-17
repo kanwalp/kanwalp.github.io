@@ -227,11 +227,15 @@ test('resume fidelity: titles, dates, client attribution and exact certification
   expect(await page.locator('main').innerText()).not.toMatch(/\d+\s?%|\$\s?\d|\d+x faster/i);
 });
 
-test('robots.txt keeps development files out of crawling without blocking the page', async ({ request }) => {
+test('only public site files are deployed; crawler rules allow the whole site', async ({ request }) => {
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toMatch(/^Allow: \/$/m);
-  for (const path of ['/tests/', '/package.json', '/*.md$']) expect(robots).toContain('Disallow: ' + path);
-  expect(robots).not.toMatch(/^Disallow: \/$/m);
+  expect(robots).not.toMatch(/^Disallow:/m);
+  // The local test server serves the whole checkout, so publication is only checked against a deployment.
+  test.skip(!process.env.BASE_URL, 'set BASE_URL to check a deployed site');
+  for (const path of ['/package.json', '/tests/portfolio.spec.js', '/README.md', '/CLAUDE_VALIDATION_REPORT.md', '/.github/workflows/pages.yml']) {
+    expect((await request.get(path)).status(), path).toBe(404);
+  }
 });
 
 for (const width of [1536, 1920, 2560]) {

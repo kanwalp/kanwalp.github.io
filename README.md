@@ -59,9 +59,13 @@ original directly into the published root.
 
 ## Publishing
 
-GitHub Pages publishes `main` / root. `.nojekyll` keeps this build-free.
-Only explicitly reviewed site files, tests and documentation are committed;
-the handoff and private source document must remain local.
-See `DEPLOYMENT_REPORT.md` for verified deployment and test evidence.
+GitHub Pages deploys through GitHub Actions (`.github/workflows/pages.yml`).
+Every push to `main` runs HTML validation and the Playwright suite; only if they
+pass is the site published. The deployed artifact contains **only**
+`index.html`, `robots.txt`, `sitemap.xml`, `favicon.svg` and `og-cover.png`.
+Tests, tooling and documentation stay in the repository and are not served.
+If you add a public asset (for example an approved resume PDF), also add it to
+the "Assemble site" step. The handoff and private source documents must remain local.
+See `CLAUDE_VALIDATION_REPORT.md` for verified deployment and test evidence.
 Search Console ownership verification and sitemap submission require the owner.
 Indexing and real-user Core Web Vitals cannot be guaranteed by deployment.
