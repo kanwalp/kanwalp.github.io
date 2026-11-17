@@ -17,7 +17,9 @@ test('raw HTML, structured data, local assets and crawler files', async ({ reque
   await expect(page.locator('main > section')).toHaveCount(8);
   expect(await page.locator('main > section').evaluateAll(nodes => nodes.map(n => n.id))).toEqual(chapters);
   const graph = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
-  expect(graph['@graph'].map(item => item['@type'])).toEqual(['Person', 'WebSite']);
+  expect(graph['@graph'].map(item => item['@type'])).toEqual(['Person', 'ProfilePage', 'WebSite']);
+  const description = await page.locator('meta[name="description"]').getAttribute('content');
+  expect(description.length).toBeLessThanOrEqual(160);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://kanwalp.github.io/');
   const links = await page.locator('[href], [src]').evaluateAll(nodes => nodes.map(n => n.getAttribute('href') || n.getAttribute('src')));
   for (const link of links) {
@@ -161,6 +163,7 @@ test('mobile touch, next, final chapter and deep links', async ({ browser }) => 
   await expect(page.locator('#mobileNext')).toHaveAccessibleName('Back to introduction');
   await page.locator('#mobileNext').tap();
   await expect(page.locator('#mobileStep')).toHaveText('01 / 08');
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
   await page.goto('http://127.0.0.1:4173/#expertise');
   await expect(page.locator('.mobile-dot[data-go="expertise"]')).toHaveAttribute('aria-current', 'step');
   await context.close();
@@ -205,4 +208,70 @@ test('blocked storage reports unavailable persistence without breaking interacti
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.locator('[data-case="pharma"]').click();
   await expect(page.locator('#case-pharma')).toBeVisible();
+});
+
+test('resume fidelity: titles, dates, client attribution and exact certification', async ({ request, page }) => {
+  const html = (await (await request.get('/')).text()).replace(/&amp;/g, '&');
+  for (const fact of [
+    'MARCH 2021 — PRESENT', 'INGRAIN SYSTEMS PVT. LTD. · GAP INC. (CLIENT)', 'Software Development Engineer (.NET Developer)',
+    'JULY 2019 — FEBRUARY 2021', 'Development Team Lead: Jul 2020 – Feb 2021.', 'Senior .NET Developer: Jul 2019 – Jun 2020.',
+    'MAY 2016 — JULY 2019', 'LIGHT PHARMA PVT. LTD.', 'Microsoft Certified Professional — Programming in C#',
+    'Entrance Permitting System (EPS)', 'Outdoor Advertising Control System (OACS)', 'Pharma Investigator (PI)'
+  ]) expect(html).toContain(fact);
+  // The resume headline is ".NET Full Stack Engineer"; no unverified seniority, employment at the client, or metrics.
+  expect(html).not.toMatch(/Senior \.NET Full Stack|Gap Inc\. employee|worked at Gap/i);
+  expect(html).not.toMatch(/\+91|8977306749/);
+  await page.goto('/');
+  // No invented performance figures in visible copy.
+  expect(await page.locator('main').innerText()).not.toMatch(/\d+\s?%|\$\s?\d|\d+x faster/i);
+});
+
+test('robots.txt keeps development files out of crawling without blocking the page', async ({ request }) => {
+  const robots = await (await request.get('/robots.txt')).text();
+  expect(robots).toMatch(/^Allow: \/$/m);
+  for (const path of ['/tests/', '/package.json', '/*.md$']) expect(robots).toContain('Disallow: ' + path);
+  expect(robots).not.toMatch(/^Disallow: \/$/m);
+});
+
+for (const width of [1536, 1920, 2560]) {
+  test(`wide ${width}px layout keeps content clear of the chapter rail`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('/');
+    const result = await page.evaluate(() => {
+      const rail = document.querySelector('.journey-rail').getBoundingClientRect();
+      const boxes = [...document.querySelectorAll('main .container')].map(el => el.getBoundingClientRect());
+      return { railLeft: rail.left, maxRight: Math.max(...boxes.map(b => b.right)), maxWidth: Math.max(...boxes.map(b => b.width)) };
+    });
+    expect(result.maxWidth).toBeLessThanOrEqual(1140);
+    expect(result.maxRight).toBeLessThan(result.railLeft);
+  });
+}
+
+test('deep links land immediately instead of animating from the top', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/#contact');
+  const top = await page.locator('#contact').evaluate(el => el.offsetTop);
+  await page.waitForTimeout(150);
+  expect(Math.abs(await page.evaluate(() => scrollY) - top)).toBeLessThan(3);
+});
+
+test('saved dark theme is applied from <head> before body content renders', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('kanwal-journey-theme-v1', 'dark'));
+  // Remove the end-of-body script so only the head bootstrap can apply the theme.
+  await page.route('**/', async route => {
+    const response = await route.fetch();
+    const body = (await response.text()).replace(/<script>\s*\(\(\) => \{[\s\S]*?<\/script>/, '');
+    await route.fulfill({ response, body });
+  });
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('on stacked mobile layout selecting a case brings its details into view', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: 700 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:4173/#work');
+  await page.locator('[data-case="pharma"]').tap();
+  await expect(page.locator('#case-pharma')).toBeInViewport();
+  await context.close();
 });

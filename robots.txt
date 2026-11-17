@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /tests/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /playwright.config.js
+Disallow: /*.md$
 Sitemap: https://kanwalp.github.io/sitemap.xml

@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.1 - 2026-11-17 (independent Claude validation)
+
+- Fixed wide-screen layout: above 1450px chapter content stretched edge to edge
+  and ran underneath the fixed chapter rail (`.chapter-inner` overrode `.container`).
+- Deep links (e.g. `/#contact`) now land directly instead of animating from the top.
+- Saved dark theme is applied from `<head>`, avoiding a light flash on load.
+- On stacked mobile layouts, selecting a work case scrolls its details into view.
+- Exact certification wording in the hero; PETE service work worded as on the resume.
+- Meta description shortened to 160 characters or fewer; added ProfilePage JSON-LD.
+- robots.txt asks crawlers to skip published development files (tests, package, docs).
+- Added resume-fidelity, wide-viewport, deep-link, theme-bootstrap, robots and
+  mobile case-selection regression tests (21 tests total).
+
 ## 1.0.0 - 2026-11-17
 
 - Preserved the approved eight-chapter white-first static career journey.
