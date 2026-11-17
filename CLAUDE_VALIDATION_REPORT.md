@@ -144,3 +144,18 @@ Local Lighthouse 13, Chrome headless, simulated mobile (4× CPU) and desktop pre
 - The follow-up commit containing this section is documentation and test-config only; its hash is in `git log`.
 
 Run the suite against any deployment with `BASE_URL=https://kanwalp.github.io npx playwright test`.
+
+## Actions deployment (verified, 2026-11-17)
+
+- Pages `build_type` switched from legacy branch publishing to `workflow` (HTTPS still enforced).
+- `.github/workflows/pages.yml`: on every push to `main`, it runs `html-validate` and the Playwright suite,
+  then (only if they pass) deploys an artifact containing just `index.html`, `robots.txt`, `sitemap.xml`,
+  `favicon.svg` and `og-cover.png`.
+- Commits `8667249` (switch and cleanup) and `375ec38` (actions upgraded to checkout v7, setup-node v7,
+  configure-pages v6, upload-pages-artifact v5, deploy-pages v5; this clears the Node 20 deprecation warnings).
+  Run 44046471350: test and deploy jobs both succeeded; CI ran 20 tests, plus 1 skipped by design.
+- Live checks: the five site files return 200. `package.json`, `tests/…`, `README.md`, this report, `.nojekyll`
+  and `.github/…` return 404. The live HTML is identical to `index.html`.
+- `BASE_URL=https://kanwalp.github.io npx playwright test`: **21/21 passed**, including the deployed-files test.
+- Cleanup: removed `.nojekyll`, `DEPLOYMENT_REPORT.md` (superseded; it remains in git history at `0e30772`),
+  unused CSS rules `.icon-btn` and `.mono`, and the unreferenced IDs `archExplain` and `mobileTrack`.
