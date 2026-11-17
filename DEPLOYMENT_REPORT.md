@@ -73,7 +73,32 @@ persisted here so test runs may safely regenerate that folder.
 - Search Console ownership verification, sitemap submission and indexing checks.
 - Approval of a separate public-safe resume PDF if a download is wanted.
 
-## Release status
+## Verified release - 2026-11-17
 
-Local implementation and automated validation complete. Repository creation,
-push and live GitHub Pages verification are the next release steps.
+- Public repository created: https://github.com/kanwalp/kanwalp.github.io
+- Tested implementation pushed on `main`:
+  `e72993afc32bb0527431e7f1fbbecd9e89ad93ec`.
+- Pages was automatically enabled for this username-site repository. The create
+  API returned 409 "already enabled"; a subsequent settings lookup confirmed
+  exactly the desired `main` / root source with HTTPS enforcement enabled.
+- Pages status: `built`; build error: null; build commit matched the pushed
+  implementation.
+- Successful build and deployment:
+  https://github.com/kanwalp/kanwalp.github.io/actions/runs/44030380182
+- Live URL verified: https://kanwalp.github.io/
+- HTTP 200 with correct content types: homepage, `/robots.txt`, `/sitemap.xml`,
+  `/favicon.svg` and `/og-cover.png`.
+- Live homepage source matched the tested local implementation after normalizing
+  line endings.
+- Uploaded private resume path and handoff prompt path returned HTTP 404. One
+  initial negative-path probe was inconclusive; explicit status/header rechecks
+  confirmed both exclusions, and the remote tree contains neither source.
+- Live Chromium desktop/mobile smoke test passed: all eight chapter anchors and
+  active rail states, case/layer selectors, saved dark mode, mobile Next, and no
+  browser JavaScript errors.
+
+No deployment blocker remains. This report-only follow-up commit records the
+verified implementation release; the final pushed HEAD is reported separately
+after its Pages deployment is checked. No history was rewritten or force-pushed.
+Mobile lab blocking time, field metrics, cross-browser/manual accessibility,
+Search Console and public-safe PDF approval remain the follow-ups listed above.
