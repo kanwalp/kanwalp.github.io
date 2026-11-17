@@ -58,7 +58,8 @@ for (const width of [1440, 1024, 768, 375, 320]) {
         const overflow = await page.locator(`#${id} h1, #${id} h2, #${id} h3, #${id} button, #${id} .btn`).evaluateAll(nodes =>
           nodes.filter(node => {
             const r = node.getBoundingClientRect();
-            return r.width && (r.left < -1 || r.right > innerWidth + 1);
+            // Inactive flagship slides sit off-screen by design and are inert.
+            return r.width && !node.closest('[inert]') && (r.left < -1 || r.right > innerWidth + 1);
           }).map(n => n.textContent));
         expect(overflow).toEqual([]);
       }
@@ -295,5 +296,60 @@ test('both certifications are visible on screen in the skills chapter and listed
       await expect(card).toBeInViewport({ ratio: 0.98 });
     }
     await expect(page.getByRole('link', { name: /Verify on Coursera/ })).toHaveAttribute('href', /coursera\.org\/account\/accomplishments\/professional-cert\/WXJD7VOTM1YK$/);
+  }
+});
+
+test('flagship slider shows every role and works by click, arrows and keyboard', async ({ page }) => {
+  await page.goto('/#flagship');
+  const slides = page.locator('#flagshipSlider .slide');
+  await expect(slides).toHaveCount(3);
+  // All three platforms are in the initial HTML for crawlers and no-JS readers.
+  const html = await page.content();
+  for (const title of ['PETE — Product End to End Merchandise Planning', 'EPS &amp; OACS — Entrance Permitting', 'Pharma Investigator (PI) — R&amp;D Knowledge Management']) expect(html).toContain(title);
+  const prev = page.locator('[data-step="-1"]'), next = page.locator('[data-step="1"]');
+  await expect(prev).toBeDisabled();
+  await expect(page.locator('#slide-eps')).toHaveAttribute('inert', '');
+  await next.click();
+  await expect(page.locator('[data-slide="1"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#slide-eps h3')).toBeInViewport();
+  await expect(page.locator('#slide-pete')).toHaveAttribute('inert', '');
+  await page.locator('[data-slide="1"]').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('[data-slide="2"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(next).toBeDisabled();
+  await expect(page.locator('.slider-count')).toHaveText('03 / 03');
+  await page.locator('[data-slide="0"]').click();
+  await expect(page.locator('#slide-pete')).not.toHaveAttribute('inert', '');
+});
+
+test('career timeline line runs exactly from the first dot to the last', async ({ page }) => {
+  for (const width of [1440, 1024]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/#experience');
+    const g = await page.evaluate(() => {
+      const t = document.querySelector('.timeline'), tr = t.getBoundingClientRect(), line = getComputedStyle(t, '::before');
+      const dots = [...document.querySelectorAll('.career-card')].map(c => c.getBoundingClientRect().left - tr.left + 38);
+      return { start: parseFloat(line.left), end: tr.width - parseFloat(line.right), dots };
+    });
+    expect(Math.abs(g.start - g.dots[0])).toBeLessThan(1.5);
+    expect(Math.abs(g.end - g.dots[2])).toBeLessThan(1.5);
+  }
+});
+
+test('selected case joins its detail panel and both columns are the same height on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/#work');
+  await expect(page.locator('.case-privacy')).toHaveCount(0);
+  for (const id of ['azure', 'gov']) {
+    await page.locator(`[data-case="${id}"]`).click();
+    const g = await page.evaluate(id => {
+      const list = document.querySelector('.case-list').getBoundingClientRect();
+      const panel = document.getElementById('case-' + id).getBoundingClientRect();
+      const button = document.querySelector(`[data-case="${id}"]`).getBoundingClientRect();
+      return { list: [list.top, list.bottom], panel: [panel.top, panel.bottom], buttonRight: button.right, panelLeft: panel.left };
+    }, id);
+    expect(Math.abs(g.list[0] - g.panel[0])).toBeLessThan(1.5);
+    expect(Math.abs(g.list[1] - g.panel[1])).toBeLessThan(1.5);
+    expect(g.buttonRight).toBeGreaterThanOrEqual(g.panelLeft);
   }
 });

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 - 2026-11-18
+
+- Flagship chapter is now a slider covering one platform from each role:
+  PETE (Ingrain Systems / Gap Inc.), EPS & OACS (Delasoft) and Pharma
+  Investigator (Light Pharma). Tabs, arrows, arrow keys and swipe; all slides
+  stay in the initial HTML.
+- Work chapter: removed the privacy footnote; the case list and detail panel
+  are now equal height, and the selected case joins the panel on desktop.
+- Career timeline line now runs exactly from the first dot to the last.
+- Certifications shown as cards (Microsoft C#, Google AI Specialization).
+
 ## 1.1.0 - 2026-11-17
 
 - GitHub Pages now deploys through GitHub Actions: each push to `main` runs
