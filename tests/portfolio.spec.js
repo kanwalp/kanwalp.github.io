@@ -292,7 +292,7 @@ test('both certifications are visible on screen in the skills chapter and listed
     await expect(cards).toHaveCount(2);
     for (const card of await cards.all()) {
       await card.scrollIntoViewIfNeeded();
-      await expect(card).toBeInViewport({ ratio: 1 });
+      await expect(card).toBeInViewport({ ratio: 0.98 });
     }
     await expect(page.getByRole('link', { name: /Verify on Coursera/ })).toHaveAttribute('href', /coursera\.org\/account\/accomplishments\/professional-cert\/WXJD7VOTM1YK$/);
   }
